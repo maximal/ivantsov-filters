@@ -107,7 +107,7 @@ namespace ivantsov
                 const auto theta {(x - z[0] - z[1] * b[1]) * b[0]};
                 const auto y {(Type == HighPass || Type == BandPass) ? theta * b[3] + z[1] * b[2]
                                                                      : theta * b[3] + z[1] * b[2] + z[0]};
-                z = {z[0] + theta, Sample {} - z[1] - theta * b[1]};
+                z = {z[0] + theta, -z[1] - theta * b[1]};
                 return Type == LowShelf ? y * b[4] : y;
             }
 
@@ -138,7 +138,7 @@ namespace ivantsov
                 update_blocks();
             }
 
-            double magnitude(const auto x) // x := cos(2pi f / fs).
+            auto magnitude(const auto x) // x := cos(2pi f / fs).
             {
                 const auto F {[x](const auto a, const auto b) {
                     return T {1} + x + (T {1} - x) * (b * b + T {2} * a * (a - b - T {1}) * (T {1} + x));
